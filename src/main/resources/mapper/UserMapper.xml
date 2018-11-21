@@ -24,5 +24,11 @@
         DELETE FROM  users  WHERE  id-#{id}
     </delete>
 
-    <update id="updateUser" parameterType="com.test.model.User"></update>
+    <update id="updateUser" parameterType="com.test.model.User">
+        UPDATE users SET name=#{name},age=#{age} where id =#{id}
+    </update>
+
+    <select id="getAllUsers" resultType="com.test.model.User">
+        select * from users
+    </select>
   </mapper>
