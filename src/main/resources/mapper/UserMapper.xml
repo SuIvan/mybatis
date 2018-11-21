@@ -17,12 +17,14 @@
   </select>
 
     <insert id="addUser" parameterType="com.test.model.User" >
-        INSERT  INTO  users(name,age) VALUES("ivantest",11);
+        INSERT  INTO  users(name,age) VALUES(#{name},#{age});
     </insert>
 
     <delete id="deleteUser" parameterType="int">
-        DELETE FROM  users  WHERE  id-#{id}
+        DELETE FROM  users  WHERE  id=#{id}
     </delete>
 
-    <update id="updateUser" parameterType="com.test.model.User"></update>
+    <update id="updateUser" parameterType="com.test.model.User">
+        UPDATE USERS SET name =#{name} ,age =#{age} WHERE id =#{id}
+    </update>
   </mapper>
