@@ -68,19 +68,20 @@ public class TestFunction {
          */
         try{
             String statement = "mapper.UserMapper.addUser";//映射sql的标识字符串
-            //执行查询返回一个唯一user对象的sql
             User user = new User();
+            user.setName("name");
             user.setAge(11);
-            user.setName("wadelei");
-            int result = session.insert(statement, user);
-            System.out.println(user);
-            System.out.println(result);
+            //执行查询返回一个唯一user对象的sql
+            int state = session.insert(statement, user);
             session.commit();
             session.close();
+            System.out.println(user);
+            System.out.println(state);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
+
     @Test
     public void updateOne(){
         //mybatis的配置文件
@@ -89,46 +90,31 @@ public class TestFunction {
         InputStream is = TestFunction.class.getClassLoader().getResourceAsStream(resource);
         //构建sqlSession的工厂
         SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is);
-
+        //使用MyBatis提供的Resources类加载mybatis的配置文件（它也加载关联的映射文件）
+        //Reader reader = Resources.getResourceAsReader(resource);
+        //构建sqlSession的工厂
+        //SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        //创建能执行映射文件中sql的sqlSession
         SqlSession session = sessionFactory.openSession();
-
+        /**
+         * 映射sql的标识字符串，
+         * me.gacl.mapping.userMapper是userMapper.xml文件中mapper标签的namespace属性的值，
+         * getUser是select标签的id属性值，通过select标签的id属性值就可以找到要执行的SQL
+         */
         try{
             String statement = "mapper.UserMapper.updateUser";//映射sql的标识字符串
-            //执行查询返回一个唯一user对象的sql
             User user = new User();
+            user.setId(5);
+            user.setName("name");
             user.setAge(11);
-            user.setName("wadelei111");
-            user.setId(7);
-            int result = session.update(statement, user);
-            System.out.println(user);
-            System.out.println(result);
+            //执行查询返回一个唯一user对象的sql
+            int state = session.update(statement, user);
             session.commit();
             session.close();
+            System.out.println(user);
+            System.out.println(state);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-
-    @Test
-    public void deleteUser(){
-        //mybatis的配置文件
-        String resource = "mybatis-config.xml";
-        //使用类加载器加载mybatis的配置文件（它也加载关联的映射文件）
-        InputStream is = TestFunction.class.getClassLoader().getResourceAsStream(resource);
-        //构建sqlSession的工厂
-        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is);
-
-        SqlSession session = sessionFactory.openSession();
-
-        try{
-            String statement = "mapper.UserMapper.deleteUser";
-            int result = session.delete(statement,1);
-            System.out.print(result);
-            session.commit();
-            session.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
 }
